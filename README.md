@@ -110,4 +110,4 @@ If you use this project, feel free to ⭐️ the repo and share your feedback.
 
 ## 📄 License
 
-MIT © 2024
+MIT
