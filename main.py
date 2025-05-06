@@ -1,10 +1,5 @@
 import os.path
-from typing import Annotated
-
-from fastapi import FastAPI, File, UploadFile
-from pydantic import BaseModel
-
-from item import Item
+from fastapi import FastAPI, UploadFile
 
 app = FastAPI()
 
