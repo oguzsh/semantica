@@ -1,24 +1,24 @@
 import os
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from typing import List
 
 class EmbeddingService:
     def __init__(self):
         self.model_name = "sentence-transformers/all-MiniLM-L6-v2"
 
-    def perform(self, documents, batch_size=100):
-        text_bucket = []
-        metadata_bucket = []
+    def perform(self, documents, batch_size=100) -> List[List[float]]:
+      text_bucket = [doc.page_content for doc in documents]
 
-        for document in documents:
-            text_bucket.append(document.page_content)
-            metadata_bucket.append(document.metadata)
+      embeddings = HuggingFaceEmbeddings(model_name=self.model_name)
 
-        embeddings = HuggingFaceEmbeddings(model_name=self.model_name)
+      all_vectors = []
+      for i in range(0, len(text_bucket), batch_size):
+          batch_text = text_bucket[i:i+batch_size]
+          batch_vectors = embeddings.embed_documents(batch_text)
+          all_vectors.extend(batch_vectors)
 
-        all_vectors =[]
-        for i in range(0, len(text_bucket), batch_size):
-            batch_text = text_bucket[i:i+batch_size]
-            batch_vectors = embeddings.embed_documents(batch_text)
-            all_vectors.extend(batch_vectors)
+      return all_vectors
 
-        return list(zip(all_vectors, metadata_bucket))
+    def embed_query(self, query: str) -> List[float]:
+      embeddings = HuggingFaceEmbeddings(model_name=self.model_name)
+      return embeddings.embed_query(query)
