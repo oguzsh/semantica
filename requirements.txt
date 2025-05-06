@@ -1,0 +1,11 @@
+fastapi==0.104.1
+uvicorn==0.23.2
+python-multipart==0.0.6
+langchain==0.0.335
+langchain-huggingface==0.0.1
+langchain-text-splitters==0.0.1
+pymupdf4llm==0.1.0
+sentence-transformers==2.2.2
+qdrant-client==1.6.4
+pydantic==2.4.2
+python-dotenv==1.0.0
