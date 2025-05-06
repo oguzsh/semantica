@@ -1,6 +1,8 @@
 import os.path
 from fastapi import FastAPI, UploadFile
 
+from services.pdf_service import PdfService
+
 app = FastAPI()
 
 file_save_path = os.path.join(os.getcwd(), 'temp')
@@ -24,6 +26,9 @@ async def upload_file(file: UploadFile):
     with open(file_path, 'wb') as f:
       f.write(await file.read())
 
-    return {"file_name": file.filename}
+    pdf_service = PdfService(file_path)
+    pdf_pages = pdf_service.convert_to_markdown()
+
+    return {"file_name": file.filename, "file_page_count": len(pdf_pages)}
   except Exception as e:
     return {"message": e.args}
