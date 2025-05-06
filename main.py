@@ -27,8 +27,8 @@ async def upload_file(file: UploadFile):
       f.write(await file.read())
 
     pdf_service = PdfService(file_path)
-    pdf_pages = pdf_service.convert_to_markdown()
+    pdf_service.process_pdf()
 
-    return {"file_name": file.filename, "file_page_count": len(pdf_pages)}
+    return {"file_name": file.filename}
   except Exception as e:
     return {"message": e.args}
