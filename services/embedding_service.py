@@ -1,10 +1,9 @@
-import os
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from typing import List
-
+from config import CONFIG
 class EmbeddingService:
     def __init__(self):
-        self.model_name = "sentence-transformers/all-MiniLM-L6-v2"
+        self.model_name = CONFIG["EMBEDDING_MODEL"]
 
     def perform(self, documents, batch_size=100) -> List[List[float]]:
       text_bucket = [doc.page_content for doc in documents]

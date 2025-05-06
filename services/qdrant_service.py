@@ -4,12 +4,11 @@ import uuid
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 from langchain.docstore.document import Document
-
-DEFAULT_VECTOR_SIZE = 384 # all-MiniLM-L6-v2 output size
+from config import CONFIG
 
 class QdrantService:
-  def __init__(self, collection_name: str, vector_size: int = DEFAULT_VECTOR_SIZE):
-    self.client = QdrantClient(url=os.getenv("QDRANT_URL"))
+  def __init__(self, collection_name: str, vector_size: int = CONFIG["EMBEDDING_MODEL_SIZE"]):
+    self.client = QdrantClient(url=CONFIG["QDRANT_URL"])
     self.collection_name = collection_name
     self.vector_size = vector_size
 

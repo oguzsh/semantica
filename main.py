@@ -1,6 +1,8 @@
 import os.path
 from fastapi import FastAPI, UploadFile
 
+from config import CONFIG
+
 from models.search_request import SearchRequest
 from services.embedding_service import EmbeddingService
 from services.pdf_service import PdfService
@@ -35,7 +37,7 @@ async def upload_file(file: UploadFile):
     embedding_service = EmbeddingService()
     embeddings = embedding_service.perform(documents)
 
-    qdrant_service = QdrantService(collection_name="pdf_collection")
+    qdrant_service = QdrantService(collection_name=CONFIG["QDRANT_COLLECTION_NAME"])
     qdrant_service.upload_vectors(documents, embeddings)
 
     # Remove the uploaded file after processing
@@ -49,7 +51,7 @@ async def upload_file(file: UploadFile):
 @app.post('/search')
 async def search(request: SearchRequest):
   try:
-    qdrant_service = QdrantService(collection_name="pdf_collection")
+    qdrant_service = QdrantService(collection_name=CONFIG["QDRANT_COLLECTION_NAME"])
     embedding_service = EmbeddingService()
     embedding = embedding_service.embed_query(request.query)
 
