@@ -1,6 +1,7 @@
 import os.path
 from fastapi import FastAPI, UploadFile
 
+from services.embedding_service import EmbeddingService
 from services.pdf_service import PdfService
 
 app = FastAPI()
@@ -27,7 +28,10 @@ async def upload_file(file: UploadFile):
       f.write(await file.read())
 
     pdf_service = PdfService(file_path)
-    pdf_service.process_pdf()
+    documents = pdf_service.process_pdf()
+
+    embedding_service = EmbeddingService()
+    embedding_service.perform(documents)
 
     return {"file_name": file.filename}
   except Exception as e:
